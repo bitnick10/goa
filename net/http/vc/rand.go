@@ -1,6 +1,7 @@
 package vc
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -23,10 +24,13 @@ func randCode() string {
 		b := byte(rand.Intn(75))
 		b += 48
 		if char.IsAlphanumeric(b) {
+			bytes[i] = b
 			i++
 		}
 	}
-	return string(bytes[:])
+	ret := string(bytes[:])
+	fmt.Println(ret)
+	return ret
 }
 
 // func randAlphaNumric() string {
@@ -39,21 +43,3 @@ func randCode() string {
 // 		}
 // 	}
 // }
-func randNum() string {
-	rand.Seed(time.Now().UTC().UnixNano())
-	// [0,9)
-	b := byte(rand.Intn(9)) + 48
-	return string(b)
-}
-func randUpperCase() string {
-	rand.Seed(time.Now().UTC().UnixNano())
-	// [0,26)
-	b := byte(rand.Intn(26)) + 65
-	return string(b)
-}
-func randLowerCase() string {
-	rand.Seed(time.Now().UTC().UnixNano())
-	// [0,26)
-	b := byte(rand.Intn(26)) + 97
-	return string(b)
-}
