@@ -2,12 +2,12 @@ package pool
 
 type InitFunc func() (interface{}, error)
 
-type Pool struct {
+type P struct {
 	conn chan interface{}
 }
 
-func New(initFunc InitFunc, size int) (pool *Pool, err error) {
-	pool = &Pool{make(chan interface{}, size)}
+func New(initFunc InitFunc, size int) (pool *P, err error) {
+	pool = &P{make(chan interface{}, size)}
 	for i := 0; i < size; i++ {
 		conn, err := initFunc()
 		if err != nil {
@@ -18,10 +18,10 @@ func New(initFunc InitFunc, size int) (pool *Pool, err error) {
 	return pool, nil
 }
 
-func (pool *Pool) GetConnection() interface{} {
+func (pool *P) GetConnection() interface{} {
 	return <-pool.conn
 }
 
-func (pool *Pool) ReleaseConnection(conn interface{}) {
+func (pool *P) ReleaseConnection(conn interface{}) {
 	pool.conn <- conn
 }
