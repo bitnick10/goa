@@ -1,7 +1,6 @@
 package vc
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -29,7 +28,6 @@ func randCode() string {
 		}
 	}
 	ret := string(bytes[:])
-	fmt.Println(ret)
 	return ret
 }
 
