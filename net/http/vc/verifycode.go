@@ -26,15 +26,15 @@ func New(sweepInterval time.Duration) VerifyCode {
 	go func() {
 		for {
 			<-ticker.C
-			session.Sweep(sweepInterval)
+			verifyCode.Sweep(sweepInterval)
 		}
 	}()
 	return verifyCode
 }
 func (vc VerifyCode) Sweep(duration time.Duration) {
-	for key, value := range VerifyCode {
+	for key, value := range vc {
 		if value.BirthDate.Add(duration).Before(time.Now()) {
-			delete(VerifyCode, key)
+			delete(vc, key)
 		}
 	}
 }
