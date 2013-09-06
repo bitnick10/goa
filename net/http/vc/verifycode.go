@@ -38,8 +38,8 @@ func (vc VerifyCode) Add() (key string) {
 	return key
 }
 
-func (vc VerifyCode) Delete() {
-
+func (vc VerifyCode) Delete(key string) {
+	delete(vc, key)
 }
 
 func (code Code) ToImage(ttfFileName string) (*image.RGBA, error) {
