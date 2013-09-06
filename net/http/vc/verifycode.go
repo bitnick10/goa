@@ -22,7 +22,21 @@ type Code struct {
 
 func New(sweepInterval time.Duration) VerifyCode {
 	verifyCode := make(VerifyCode)
+	ticker := time.NewTicker(sweepInterval)
+	go func() {
+		for {
+			<-ticker.C
+			session.Sweep(sweepInterval)
+		}
+	}()
 	return verifyCode
+}
+func (vc VerifyCode) Sweep(duration time.Duration) {
+	for key, value := range VerifyCode {
+		if value.BirthDate.Add(duration).Before(time.Now()) {
+			delete(VerifyCode, key)
+		}
+	}
 }
 
 func (vc VerifyCode) Add() (key string) {
