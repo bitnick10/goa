@@ -28,10 +28,3 @@ func GetCollection(url, db, collection string) (*mgo.Collection, error) {
 	coll := mongo.DB(db).C(collectionName)
 	return coll, nil
 }
-func Find(url, db, collction string, query interface{}) (*mgo.Query, error) {
-	coll, err := GetCollection(url, db, collction)
-	if err != nil {
-		return nil, err
-	}
-	return coll.Find(), nil
-}
