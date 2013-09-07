@@ -1,4 +1,4 @@
-package vc
+package captcha
 
 import (
 	"math/rand"

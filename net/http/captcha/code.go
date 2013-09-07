@@ -1,4 +1,4 @@
-package vc
+package captcha
 
 import (
 	"crypto/md5"
@@ -13,47 +13,57 @@ import (
 	"github.com/Bitnick2002/freetype-go/freetype"
 )
 
-type VerifyCode map[string]*Code
+type CaptchaCode struct {
+	codemap map[string]*Code
+	// OnBeforeSweep func()
+	OnAfterSweep func()
+}
 
 type Code struct {
 	Code      string
 	BirthDate time.Time
 }
 
-func New(sweepInterval time.Duration) VerifyCode {
-	verifyCode := make(VerifyCode)
+func New(sweepInterval time.Duration) *CaptchaCode {
+	cc := &CaptchaCode{codemap: make(CaptchaCode)}
 	ticker := time.NewTicker(sweepInterval)
 	go func() {
 		for {
 			<-ticker.C
-			verifyCode.Sweep(sweepInterval)
+			cc.Sweep(sweepInterval)
 		}
 	}()
-	return verifyCode
+	return cc
 }
-func (vc VerifyCode) Sweep(duration time.Duration) {
-	for key, value := range vc {
+func (cc *CaptchaCode) Get(key string) (code *Code) {
+	return cc.codemap[key]
+}
+func (cc *CaptchaCode) Delete(key string) {
+	delete(cc.codemap, key)
+}
+func (cc *CaptchaCode) Len(key string) int {
+	return len(cc.codemap)
+}
+func (cc *CaptchaCode) Sweep(duration time.Duration) {
+	for key, value := range cc.codemap {
 		if value.BirthDate.Add(duration).Before(time.Now()) {
-			delete(vc, key)
+			delete(cc, key)
 		}
 	}
+	OnAfterSweep()
 }
 
-func (vc VerifyCode) Add() (key string) {
+func (cc *CaptchaCode) Add() (key string) {
 	h := md5.New()
 	io.WriteString(h, randString())
 	key = hex.EncodeToString(h.Sum(nil))
 
-	for vc[key] != nil {
+	for cc.codemap[key] != nil {
 		io.WriteString(h, strconv.Itoa(rd()))
 		key = hex.EncodeToString(h.Sum(nil))
 	}
-	vc[key] = &Code{randCode(), time.Now()}
+	cc.codemap[key] = &Code{randCode(), time.Now()}
 	return key
-}
-
-func (vc VerifyCode) Delete(key string) {
-	delete(vc, key)
 }
 
 func (code Code) ToImage(ttfFileName string) (*image.RGBA, error) {
