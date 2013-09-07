@@ -26,6 +26,7 @@ type Code struct {
 
 func New(sweepInterval time.Duration) *CaptchaCode {
 	cc := &CaptchaCode{codemap: make(map[string]*Code)}
+	cc.OnAfterSweep = func() {}
 	ticker := time.NewTicker(sweepInterval)
 	go func() {
 		for {
@@ -47,10 +48,10 @@ func (cc *CaptchaCode) Len(key string) int {
 func (cc *CaptchaCode) Sweep(duration time.Duration) {
 	for key, value := range cc.codemap {
 		if value.BirthDate.Add(duration).Before(time.Now()) {
-			delete(cc, key)
+			delete(cc.codemap, key)
 		}
 	}
-	OnAfterSweep()
+	cc.OnAfterSweep()
 }
 
 func (cc *CaptchaCode) Add() (key string) {

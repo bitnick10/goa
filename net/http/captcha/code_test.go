@@ -1,4 +1,4 @@
-package vc
+package captcha
 
 import (
 	"fmt"
@@ -33,9 +33,9 @@ func Test_(t *testing.T) {
 
 func pic(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "image/png")
-	verifyCode := New(time.Second)
-	key := verifyCode.Add()
-	image, _ := verifyCode[key].ToImage("C:\\luxi-fonts\\luxisr.ttf")
+	captchaCode := New(time.Second)
+	key := captchaCode.Add()
+	image, _ := captchaCode.Get(key).ToImage("C:\\luxi-fonts\\luxisr.ttf")
 	png.Encode(res, image)
 }
 
