@@ -25,7 +25,7 @@ type Code struct {
 }
 
 func New(sweepInterval time.Duration) *CaptchaCode {
-	cc := &CaptchaCode{codemap: make(CaptchaCode)}
+	cc := &CaptchaCode{codemap: make(map[string]*Code)}
 	ticker := time.NewTicker(sweepInterval)
 	go func() {
 		for {
