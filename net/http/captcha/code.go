@@ -42,7 +42,7 @@ func (cc *CaptchaCode) Get(key string) (code *Code) {
 func (cc *CaptchaCode) Delete(key string) {
 	delete(cc.codemap, key)
 }
-func (cc *CaptchaCode) Len(key string) int {
+func (cc *CaptchaCode) Len() int {
 	return len(cc.codemap)
 }
 func (cc *CaptchaCode) Sweep(duration time.Duration) {
