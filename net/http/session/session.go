@@ -35,6 +35,9 @@ func (session *S) Get(key string) *Content {
 func (session *S) Len() int {
 	return len(session.sessionmap)
 }
+func (session *S) Delete(key string) {
+	delete(session.sessionmap, key)
+}
 
 func (session *S) Sweep(duration time.Duration) {
 	for key, value := range session.sessionmap {
