@@ -37,29 +37,13 @@ func (this *spec) addErrorInfo(level int, errorString string) {
 }
 
 func (this *spec) addChild(level int, child spec) {
-	// console.Color(console.YELLOW).Println("aaaaaaaaaaaaaa = ", this.description)
 	pChildren := &this.children
-	// console.Color(console.YELLOW).Println("in add child len = ", len(*pChildren))
 	for level > 1 {
-		// console.Color(console.YELLOW).Println("in for")
-		// fmt.Println("level = ", level)
-		// fmt.Println("len(pChildren) = ", len(pChildren))
-		// fmt.Println("level 1 len(pChildren) = ", level)
 		lastSpec := &(*pChildren)[len(*pChildren)-1]
-		// console.Color(console.YELLOW).Println(lastSpec.description)
 		pChildren = &((*lastSpec).children)
 		level--
 	}
 	*pChildren = append(*pChildren, child)
-	//temp := &g_rootSpec.children
-	//*temp = append(pChildren, child)
-	// console.Color(console.YELLOW).Println("in temp child len = ", len(*temp))
-	// console.Color(console.YELLOW).Println("in after child len = ", len(*pChildren))
-	// console.Color(console.YELLOW).Println("in aftrer g_rootSpec len = ", g_rootSpec.children[0].description)
-	// console.Color(console.YELLOW).Println("in aftrer g_rootSpec len = ", len(g_rootSpec.children[0].children))
-
-	// fmt.Println("after append level = ", level)
-	// fmt.Println("after append len(slice) = ", len(slice))
 }
 
 func PrintSpec() {
